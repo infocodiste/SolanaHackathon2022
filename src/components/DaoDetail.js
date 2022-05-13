@@ -10,9 +10,28 @@ const DaoDetail = () => {
     console.log("treasure = ", dao);
 
     const [finalData, setfinalData] = useState([]);
+    // const finalData = [
+    //     {
+    //         circulating_supply: 847496054.8027713,
+    //         market_cap: 330258209.40939736,
+    //         max_supply: 1000000000,
+    //         percent_change_1h: -0.06701757,
+    //         percent_change_7d: -44.36690355,
+    //         percent_change_24h: 19.17383301,
+    //         percent_change_30d: -45.39807254,
+    //         percent_change_60d: -18.9214577,
+    //         percent_change_90d: -36.06007106,
+    //         price: 0.3896870168749692,
+    //         symbol: "ZRX",
+    //         total_supply: 1000000000,
+    //         volume24h: 70574785.59746537,
+    //     }
+    // ]
+
 
     useEffect(() => {
         // console.log(daoData);
+
     }, [daoData])
 
     function getdata(symbol) {
@@ -117,11 +136,33 @@ const DaoDetail = () => {
 
                         <div className="right col-md-5">
                             <div style={{display: 'flex'}}>
-                         
                                  
                                     <div className="sideBtns" style={{marginRight: "20px", color: "white"}}>
                                     {finalData.length > 0 ?
-                                        finalData[0].symbol
+                                        <>
+                                            {finalData[0].symbol}
+                                            <i className="fa-solid fa-ellipsis-vertical show-data"
+                                                onMouseEnter={() => document.getElementById('hide-show-data').style.display = 'block'}
+                                                onMouseLeave={() => document.getElementById('hide-show-data').style.display = 'none'}></i>
+                                            <div id='hide-show-data' className='hide-data' style={{position: "relative", backgroundColor: "aqua"}}>
+                                                <div style={{position: "absolute", backgroundColor: "white", color: "black", padding: '10px', width: "350px", borderRadius: '5px'}}>
+                                                    <p>symbol: {finalData[0].symbol}</p>
+                                                    <p>circulating_supply: {finalData[0].circulating_supply}</p>
+                                                    <p>volume24h: {finalData[0].volume24h}</p>
+                                                    <p>max_supply: {finalData[0].max_supply}</p>
+                                                    <p>market_cap: {finalData[0].market_cap}</p>
+                                                    <p>percent_change_1h: {finalData[0].percent_change_1h}</p>
+                                                    <p>percent_change_24h: {finalData[0].percent_change_24h}</p>
+                                                    <p>percent_change_7d: {finalData[0].percent_change_7d}</p>
+                                                    <p>percent_change_30d: {finalData[0].percent_change_30d}</p>
+                                                    <p>percent_change_60d: {finalData[0].percent_change_60d}</p>
+                                                    <p>percent_change_90d: {finalData[0].percent_change_90d}</p>
+                                                    <p>price: {finalData[0].price}</p>
+                                                    <p>total_supply: {finalData[0].total_supply}</p>
+
+                                                </div>
+                                            </div>
+                                        </>
                                         :
                                         <button onClick={() => getdata(thisData.daoToken)}>Get Data</button>
                                     }

@@ -469,3 +469,18 @@ nav .connectBtn {
         top: -45px;
     }
 }
+
+.display-data {
+    display: block;
+}
+
+.hide-data {
+    display: none;
+}
+
+
+
+
+/* .show-data:hover {
+    display: block;
+} */
