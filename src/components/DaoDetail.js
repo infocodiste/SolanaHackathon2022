@@ -16,13 +16,14 @@ const DaoDetail = () => {
     }, [daoData])
 
     function getdata(symbol) {
-        let data = finalData;
+        let data = [];
         let response = null;
         new Promise(async (resolve, reject) => {
             try {
                 response = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=' + symbol, {
                     headers: {
-                        'X-CMC_PRO_API_KEY': '6dd784a5-631c-4fad-87a1-82754ab0b8e3'
+                        'X-CMC_PRO_API_KEY': '6dd784a5-631c-4fad-87a1-82754ab0b8e3',
+                        'Access-Control-Allow-Origin': '*'
                     },
                 });
             } catch (ex) {
@@ -93,7 +94,7 @@ const DaoDetail = () => {
                                     <span className='title'>CATAGORIES: </span>
                                     {
                                         thisData.category.map((elem, i) => {
-                                            return <p>{elem}</p>;
+                                            return <p key={"detail" + i}>{elem}</p>;
                                         })
                                     }
                                 </div>
@@ -116,14 +117,16 @@ const DaoDetail = () => {
 
                         <div className="right col-md-5">
                             <div style={{display: 'flex'}}>
-                            {   
-                                finalData.length > 0 ?
-                                    console.log(finalData)
-                                    :
-                                    <div className="sideBtns" style={{marginRight: "20px"}}>
+                         
+                                 
+                                    <div className="sideBtns" style={{marginRight: "20px", color: "white"}}>
+                                    {finalData.length > 0 ?
+                                        finalData[0].symbol
+                                        :
                                         <button onClick={() => getdata(thisData.daoToken)}>Get Data</button>
+                                    }
                                     </div>
-                            }
+                            
                     
                                 <div className="sideBtns">
                                     <NavLink to="">Buy Token</NavLink>
