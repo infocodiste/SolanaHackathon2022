@@ -1,17 +1,77 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
-import { daoData } from '../components/daoData'
+import { daoData } from '../components/daoData';
+import axios from 'axios';
 
 const DaoDetail = () => {
 
     const { dao } = useParams();
+    console.log("treasure = ", dao);
+
+    const [finalData, setfinalData] = useState([]);
 
     useEffect(() => {
         // console.log(daoData);
     }, [daoData])
 
+    function getdata(symbol) {
+        let data = finalData;
+        let response = null;
+        new Promise(async (resolve, reject) => {
+            try {
+                response = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=' + symbol, {
+                    headers: {
+                        'X-CMC_PRO_API_KEY': '6dd784a5-631c-4fad-87a1-82754ab0b8e3'
+                    },
+                });
+            } catch (ex) {
+                response = null;
+                // error
+                console.log(ex);
+                reject(ex);
+            }
+            if (response) {
+
+                // success
+                const json = response.data;
+                const datajson = json.data[symbol];
+                console.log(datajson);
+                resolve(json);
+
+
+                const jsonfinal = {
+                    'symbol':symbol,
+                    'circulating_supply':datajson.circulating_supply,
+                    'volume24h':datajson.quote.USD.volume_24h,
+                    'max_supply':datajson.max_supply,
+                    // 'token_address':datajson.platform.token_address,
+                    'market_cap':datajson.quote.USD.market_cap,
+                    'percent_change_1h' : datajson.quote.USD.percent_change_1h,
+                    'percent_change_24h' : datajson.quote.USD.percent_change_24h,
+                    'percent_change_7d' : datajson.quote.USD.percent_change_7d,
+                    'percent_change_30d' : datajson.quote.USD.percent_change_30d,
+                    'percent_change_60d' : datajson.quote.USD.percent_change_60d,
+                    'percent_change_90d' : datajson.quote.USD.percent_change_90d,
+                    'price' : datajson.quote.USD.price,
+                    'total_supply' : datajson.total_supply                   
+                };
+
+                console.log(jsonfinal);
+                data.push(jsonfinal);
+                setfinalData(data);
+
+            }
+        });
+
+
+
+
+
+    }
+
     const thisData = daoData.find((elem) => elem.TreasuryAddress == dao);
+    // console.log(thisData.daoToken);
     return (
         <div className="main">
             <section className='detailPageSec'>
@@ -55,18 +115,29 @@ const DaoDetail = () => {
                         </div>
 
                         <div className="right col-md-5">
-                            <div className="sideBtns">
-                                <NavLink to="">Buy Tokan</NavLink>
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            <div style={{display: 'flex'}}>
+                            {   
+                                finalData.length > 0 ?
+                                    console.log(finalData)
+                                    :
+                                    <div className="sideBtns" style={{marginRight: "20px"}}>
+                                        <button onClick={() => getdata(thisData.daoToken)}>Get Data</button>
+                                    </div>
+                            }
+                    
+                                <div className="sideBtns">
+                                    <NavLink to="">Buy Token</NavLink>
+                                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
                             </div>
 
                             <div className="connect">
                                 <h4>Connect</h4>
                                 <div className="links">
-                                    <a href={thisData.website} target='_BLANK' className="website"><i class="fa-solid fa-globe"></i> {(thisData.website).replace('https://','')}</a>
-                                    <a href={thisData.discord} target='_BLANK' className="discord"><i class="fa-brands fa-discord" style={{color:'#5865F2'}}></i> Discord</a>
-                                    <a href={thisData.twitter} target='_BLANK' className="twitter"><i class="fa-brands fa-twitter" style={{color:'#55ACEE'}}></i> Twitter</a>
-                                    <a href={thisData.whitepaper} target='_BLANK' className="twitter"><i class="fa-solid fa-file"></i> Whitepaper</a>
+                                    <a href={thisData.website} target='_BLANK' className="website"><i className="fa-solid fa-globe"></i> {(thisData.website).replace('https://','')}</a>
+                                    <a href={thisData.discord} target='_BLANK' className="discord"><i className="fa-brands fa-discord" style={{color:'#5865F2'}}></i> Discord</a>
+                                    <a href={thisData.twitter} target='_BLANK' className="twitter"><i className="fa-brands fa-twitter" style={{color:'#55ACEE'}}></i> Twitter</a>
+                                    <a href={thisData.whitepaper} target='_BLANK' className="twitter"><i className="fa-solid fa-file"></i> Whitepaper</a>
                                 </div>
                             </div>
 

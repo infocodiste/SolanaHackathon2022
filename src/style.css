@@ -316,7 +316,8 @@ nav .connectBtn {
     gap: 20px;
 }
 
-.main .detailPageSec .detailArea .right .sideBtns a {
+.main .detailPageSec .detailArea .right .sideBtns a,
+.main .detailPageSec .detailArea .right .sideBtns button {  
     background: linear-gradient(270deg, #2253F8 0%, #E020F3 100%);
     border-radius: 20px;
     width: 150px;
