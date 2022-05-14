@@ -1,0 +1,53 @@
+
+
+Check whether a wallet is installed when accessing the site.
+// UseEffect
+useEffect(() => {    
+    const onLoad = async () => {
+      await checkIfWalletIsConnected()
+    }    
+    window.addEventListener('load', onLoad)
+    return () => window.removeEventListener('load', onLoad)
+  }, [])
+   return {
+    walletAddress,
+    connectWallet,
+  }
+}
+
+Use Effect is used to check whether the wallet was installed. When the homepage is loaded, the checkIfWalletIsConnected() function is executed. This function checks whether the wallet is connected to the site or not.
+
+export const useWallet = () => {
+ const [walletAddress, setWalletAddress] = useState(null)
+ // Actions 
+const checkIfWalletIsConnected = async () => {
+ try {
+   const { solana } = window
+   console.log(solana)
+   if (solana) {
+     if (solana.isNeon) {
+         console.log(‘Neon wallet found!’)
+         const response = await solana.connect({ onlyIfTrusted: true })
+         console.log(‘Connected with Public Key:’, response.publicKey.toString())
+         /*
+          * Set the user’s publicKey in state to be used later!
+          */
+         setWalletAddress(response.publicKey.toString()) }
+     } else {
+         alert(‘Solana object not found! Get a Neon Wallet’)
+     }
+ } catch (error) {
+     console.error(error)
+ }
+}
+
+Connecting to the wallet.
+If the wallet is not connected to the site, you can connect the wallet to the site by clicking the button. When the button is clicked, the connectWallet() function is called.
+
+const connectWallet = async () => {
+ const { solana } = window
+ if (solana) {
+     const response = await solana.connect()
+     console.log(‘Connected with Public Key:’, response.publicKey.toString()) setWalletAddress(response.publicKey.toString())
+     }
+ }
