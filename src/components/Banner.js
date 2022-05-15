@@ -13,7 +13,7 @@ const Banner = () => {
                         <h2>The world's <br />
                             first Grading System for DAO</h2>
 
-                        <p>We're fuelling the decentralized future by building the original DAO marketplace. Discover, invest and manage your DAOs all in one place. To get started, try our DAO Personality Quiz.</p>
+                        <p>We're fuelling the decentralized future by building the Decentralised DAO Grading System. It's completely Decentralised And You can decide your own strategy to get Ranking of DAO</p>
 
                         <NavLink to='#'>See More</NavLink>
                     </div>
